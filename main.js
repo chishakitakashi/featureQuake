@@ -1,11 +1,11 @@
-const display = document.getElementById("display");
-const choice1 = document.getElementById("choice-1");
-const choice2 = document.getElementById("choice-2");
-const choice3 = document.getElementById("choice-3");
-const choice4 = document.getElementById("choice-4");
 const idoElement = document.getElementById("ido");
 const keidoElement = document.getElementById("keido");
 const addButton = document.getElementById("add-button");
+const container = document.getElementById("container");
+// const probabilityElement0 = document.getElementById("probability0");
+// const probabilityElement1 = document.getElementById("probability1");
+// const probabilityElement2 = document.getElementById("probability2");
+// const probabilityElement3 = document.getElementById("probability3");
 // ​地震のコードと説明
 const choices = [
   {
@@ -27,24 +27,44 @@ const choices = [
 ];
 // クリックしたら4回分の地震情報を出す。
 addButton.onclick = function () {
+  container.textContent = "";
   for (let i = 0; i < choices.length; i++) {
     url = "";
     // 入力された緯度経度をURLに代入
     url = `https://www.j-shis.bosai.go.jp/map/api/pshm/Y2010/AVR/TTL_MTTL/meshinfo.geojson?position=${idoElement.value},${keidoElement.value}&epsg=4301&attr=${choices[i].value}`;
-    // 配列に記述してあるvalueをURLに足してfetchに使用するURLが完成
-    // url = url + choices[i].value;
-    // 確認用↓
-    console.log(`${url}`);
-    // console.log(choices[i].value);
-    // console.log(choices[i].text);
+
+    // console.log(`${url}`);
+
     fetch(`${url}`)
       .then((res) => {
         return res.json();
       })
       .then((data) => {
         console.log(choices[i].value);
-        display.textContent = data.features[0].properties[choices[i].value];
-        console.log(display.textContent);
+
+        // card を作成
+        const card = document.createElement("div");
+        card.className = "card";
+
+        // title（地震の名前）を作成
+        const title = document.createElement("div");
+        title.className = "title";
+        title.textContent = choices[i].text;
+        console.log(`${title.textContent}`);
+
+        // todo（確率) を作成
+        const todo = document.createElement("div");
+        todo.className = "todo";
+        todo.textContent = data.features[0].properties[choices[i].value];
+        console.log(`${todo.textContent}`);
+
+        // title（地震の名前）を card の中に追加する
+        card.append(title);
+        // todo（確率) を card の中に追加する
+        card.append(todo);
+
+        // card を container の中に追加する
+        container.append(card);
       });
   }
   keidoElement.value = "";
