@@ -2,10 +2,6 @@ const idoElement = document.getElementById("ido");
 const keidoElement = document.getElementById("keido");
 const addButton = document.getElementById("add-button");
 const container = document.getElementById("container");
-// const probabilityElement0 = document.getElementById("probability0");
-// const probabilityElement1 = document.getElementById("probability1");
-// const probabilityElement2 = document.getElementById("probability2");
-// const probabilityElement3 = document.getElementById("probability3");
 // ​地震のコードと説明
 const choices = [
   {
@@ -29,11 +25,8 @@ const choices = [
 addButton.onclick = function () {
   container.textContent = "";
   for (let i = 0; i < choices.length; i++) {
-    url = "";
     // 入力された緯度経度をURLに代入
     url = `https://www.j-shis.bosai.go.jp/map/api/pshm/Y2010/AVR/TTL_MTTL/meshinfo.geojson?position=${idoElement.value},${keidoElement.value}&epsg=4301&attr=${choices[i].value}`;
-
-    // console.log(`${url}`);
 
     fetch(`${url}`)
       .then((res) => {
